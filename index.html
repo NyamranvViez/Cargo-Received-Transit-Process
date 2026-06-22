@@ -180,7 +180,7 @@
               <p id="inboundSectionLabel" class="text-xs uppercase tracking-[0.25em] text-emerald-300">Inbound</p>
               <h2 id="inboundHeading" class="text-2xl font-semibold">Cargo Intake (Inbound)</h2>
             </div>
-            <span id="originLabel" class="rounded-full border border-slate-700 bg-slate-900/80 px-4 py-2 text-sm text-slate-300">Origin: Myitkyina</span>
+            <span id="originLabel" class="rounded-full border border-slate-700 bg-slate-900/80 px-4 py-2 text-sm text-slate-300">Cargo Process</span>
           </div>
           <form id="inboundForm" class="mt-6 grid gap-6 xl:grid-cols-[1fr_0.9fr]">
             <div class="space-y-5">
@@ -388,11 +388,44 @@
     </div>
   </div>
 
+    <!-- Ledger Edit Modal -->
+    <div id="ledgerEditModal" class="fixed inset-0 hidden items-center justify-center bg-black/70 p-4">
+      <div class="w-full max-w-md rounded-[32px] glass shadow-deep p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-xl font-semibold">Edit Ledger Entry</h3>
+            <p class="text-sm text-slate-400">Change target project and total boxes.</p>
+          </div>
+          <button id="ledgerEditCancel" class="rounded-2xl border border-slate-700 px-3 py-2">Cancel</button>
+        </div>
+        <div class="mt-5 space-y-4">
+          <label class="block text-sm text-slate-200">
+            <span class="text-sm">Target Project</span>
+            <select id="ledgerEditTarget" class="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-3">
+              <option>Nanyun</option>
+              <option>Lahe</option>
+              <option>Layshi</option>
+              <option>Hkamti</option>
+            </select>
+          </label>
+          <label class="block text-sm text-slate-200">
+            <span class="text-sm">Total Shipped Boxes</span>
+            <input id="ledgerEditTotal" type="number" min="1" class="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-3" />
+          </label>
+          <div class="flex justify-end gap-3">
+            <button id="ledgerEditSave" class="btn-3d btn-save rounded-2xl px-4 py-2">Save</button>
+          </div>
+          <p id="ledgerEditFeedback" class="text-sm text-rose-300"></p>
+        </div>
+      </div>
+    </div>
+
   <script>
     const LOCAL_DB_KEY = 'nanyun_local_db';
     let entries = [];
     let activeArrivalId = null;
     let activeDispatchId = null;
+    let activeLedgerEditId = null;
     let currentLang = 'en';
 
     const ui = {
@@ -443,7 +476,13 @@
       dispatchFeedback: document.getElementById('dispatchFeedback'),
       closeDispatchModal: document.getElementById('closeDispatchModal'),
       cancelDispatch: document.getElementById('cancelDispatch'),
-      confirmDispatchBtn: document.getElementById('confirmDispatchBtn')
+      confirmDispatchBtn: document.getElementById('confirmDispatchBtn'),
+      ledgerEditModal: document.getElementById('ledgerEditModal'),
+      ledgerEditTarget: document.getElementById('ledgerEditTarget'),
+      ledgerEditTotal: document.getElementById('ledgerEditTotal'),
+      ledgerEditSave: document.getElementById('ledgerEditSave'),
+      ledgerEditCancel: document.getElementById('ledgerEditCancel'),
+      ledgerEditFeedback: document.getElementById('ledgerEditFeedback')
     };
 
     
@@ -673,23 +712,48 @@
       document.querySelectorAll('.ledger-delete').forEach(button => button.addEventListener('click', e => deleteLedgerEntry(e.target.dataset.id)));
     }
 
-    async function editLedgerEntry(id) {
-      const item = entries.find(entry => entry.id === id);
+    function editLedgerEntry(id) {
+      openLedgerEditModal(id);
+    }
+
+    function openLedgerEditModal(id) {
+      const item = entries.find(e => e.id === id);
       if (!item) return;
-      const promptLabel = translations[currentLang]?.ledgerEditPrompt || 'Update target project and total boxes in one line, separated by comma:';
-      const raw = prompt(promptLabel, `${item.targetProject}, ${item.totalShippedBoxes}`);
-      if (!raw) return;
-      const parts = raw.split(',').map(p => p.trim());
-      if (parts.length < 2) return;
-      item.targetProject = parts[0] || item.targetProject;
-      item.totalShippedBoxes = Number(parts[1]) || item.totalShippedBoxes;
+      activeLedgerEditId = id;
+      ui.ledgerEditTarget.value = item.targetProject || 'Nanyun';
+      ui.ledgerEditTotal.value = Number(item.totalShippedBoxes || 0) || 1;
+      ui.ledgerEditFeedback.textContent = '';
+      ui.ledgerEditModal.classList.remove('hidden');
+      ui.ledgerEditModal.classList.add('flex');
+    }
+
+    function closeLedgerEditModal() {
+      activeLedgerEditId = null;
+      ui.ledgerEditModal.classList.remove('flex');
+      ui.ledgerEditModal.classList.add('hidden');
+    }
+
+    async function handleLedgerEditSave() {
+      const id = activeLedgerEditId;
+      if (!id) return;
+      const item = entries.find(e => e.id === id);
+      if (!item) return;
+      const target = ui.ledgerEditTarget.value;
+      const total = Number(ui.ledgerEditTotal.value) || 0;
+      if (!target || total < 1) {
+        ui.ledgerEditFeedback.textContent = 'Please select a project and enter a valid total.';
+        return;
+      }
+      item.targetProject = target;
+      item.totalShippedBoxes = total;
       normalizeEntry(item);
       item.updatedAt = new Date().toISOString();
       try {
         await updateLocalEntry();
-      } catch (error) {
-        console.error(error);
-        ui.inboundFeedback.textContent = 'Unable to save ledger changes locally.';
+        closeLedgerEditModal();
+      } catch (err) {
+        console.error(err);
+        ui.ledgerEditFeedback.textContent = 'Unable to save ledger changes locally.';
       }
     }
 
@@ -942,6 +1006,8 @@
     ui.inboundAuditButton.addEventListener('click', optimizeManifest);
     ui.exportDashboardBtn?.addEventListener('click', exportInventoryToExcel);
     ui.exportLedgerBtn?.addEventListener('click', exportInventoryToExcel);
+    ui.ledgerEditSave?.addEventListener('click', handleLedgerEditSave);
+    ui.ledgerEditCancel?.addEventListener('click', closeLedgerEditModal);
     ui.closeArrivalModal.addEventListener('click', closeArrivalModal);
     ui.cancelArrival.addEventListener('click', closeArrivalModal);
     ui.confirmArrival.addEventListener('click', handleArrivalConfirm);
@@ -970,7 +1036,7 @@
         transitHeading: 'Transit Dispatch (Outbound)',
         ledgerSectionLabel: 'Data Ledger',
         ledgerHeading: 'Historic Logs & Audit Records',
-        originLabel: 'Origin: Myitkyina',
+        originLabel: 'Cargo Process',
         warehouseDispatchLabel: 'Dispatch from Warehouse',
         pipelineLogicLabel: 'Pipeline Logic',
         pipelineInventoryLabel: 'Pipeline Inventory',
@@ -1070,7 +1136,7 @@
         transitHeading: 'စီးဆင်း ပို့ဆောင်(Outbound)',
         ledgerSectionLabel: 'ဒေတာ မှတ်တမ်း',
         ledgerHeading: 'မှတ်တမ်းများနှင့် စစ်ဆေးရေး မှတ်တမ်း',
-        originLabel: 'အရင်းအမြစ်: မိတက်ကျီနား',
+        originLabel: 'ကုန်ပစ္စည်း လုပ်ငန်းစဉ်',
         warehouseDispatchLabel: 'သိုလှောင်သည်ကနေ ပို့ဆောင်ပါ',
         pipelineLogicLabel: 'လမ်းကြောင်း အစီအစဉ်',
         pipelineInventoryLabel: 'လမ်းကြောင်း စာရင်း',
