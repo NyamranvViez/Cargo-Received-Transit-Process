@@ -1,0 +1,10 @@
+{
+  "name": "Eno Media Player",
+  "short_name": "EnoPlayer",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#05070d",
+  "background_color": "#05070d",
+  "description": "Eno Media Player is a PWA glass-style media player with media list browsing, custom backgrounds, and gesture controls.",
+  "scope": "."
+}
