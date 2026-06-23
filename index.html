@@ -287,7 +287,7 @@
                   <th id="thWarehouseWaybill" class="px-3 py-3">WayBill</th>
                   <th id="thWarehouseProject" class="px-3 py-3">Project</th>
                   <th id="thWarehouseIn" class="px-3 py-3">In Warehouse</th>
-                  <th id="thWarehouseManifest" class="px-3 py-3">Manifest Summary</th>
+                  <th id="thWarehouseManifest" class="px-3 py-3">Description</th>
                   <th id="thWarehouseStatus" class="px-3 py-3">Status</th>
                   <th id="thWarehouseLastTransit" class="px-3 py-3">Last Transit</th>
                   <th id="thWarehouseAction" class="px-3 py-3">Action</th>
@@ -366,10 +366,9 @@
           <label class="block text-sm text-slate-200">
             <span id="dispatchDestinationLabel">Destination Location</span>
             <select id="dispatchDestination" class="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-slate-100">
-              <option>Nanyun General Hospital</option>
-              <option>Lahe Substation</option>
-              <option>Layshi Camp Clinic</option>
-              <option>Hkamti Central Depot</option>
+              <option>Lahe</option>
+              <option>Layshi</option>
+              <option>Hkamti</option>
             </select>
           </label>
           <label class="block text-sm text-slate-200">
@@ -529,16 +528,16 @@
           transit: "ဂိုဒေါင်မှ ပစ္စည်းထုတ်ရန်",
           ledger: "ဒေတာမှတ်တမ်းချုပ်"
         },
-        projectLabel: "နာန်ယွန်း ပရောဂျက်",
+        projectLabel: "နန်းယွန်း ပရောဂျက်",
         headerTitle: "ဆေးဘက်ဆိုင်ရာ ထောက်ပံ့ပို့ဆောင်ရေး ကွပ်ကဲမှုစင်တာ",
         headerDesc: "ပစ္စည်းတစ်စိတ်တစ်ပိုင်းရောက်ရှိမှု၊ ဂိုဒေါင်တွင်းစာရင်း၊ ခွဲထုတ်ဖြန့်ဖြူးမှုနှင့် စာရင်းစစ်ဆေးနိုင်သည့် ဒေသတွင်းသုံးစနစ်။",
         createdByLabel: "ရေးဆွဲသူ",
         dashboardSectionLabel: "ခြုံငုံသုံးသပ်ချက်",
         dashboardHeading: "အမှုဆောင် ပိုက်လိုင်းဒက်ရှ်ဘုတ်",
-        statTotalLoggedLabel: "စုစုပေါင်း သွင်းပြီးသေတ္တာ",
-        statPipelineBoxesLabel: "လမ်းခရီးရှိ သေတ္တာအရေအတွက်",
-        statWarehouseBoxesLabel: "ဂိုဒေါင်ထဲရှိ သေတ္တာစုစုပေါင်း",
-        statDispatchedBoxesLabel: "ဖြန့်ဖြူးပြီး သေတ္တာစုစုပေါင်း",
+        statTotalLoggedLabel: "စုစုပေါင်း သွင်းပြီးဂျက်ဖါ",
+        statPipelineBoxesLabel: "လမ်းခရီးရှိ ဂျက်ဖါအရေအတွက်",
+        statWarehouseBoxesLabel: "ဂိုဒေါင်ထဲရှိ ဂျက်ဖါစုစုပေါင်း",
+        statDispatchedBoxesLabel: "ဖြန့်ဖြူးပြီး ဂျက်ဖါစုစုပေါင်း",
         pipelineSnapshotLabel: "ပိုက်လိုင်း အခြေအနေပြဇယား",
         labelWarehouse: "ဂိုဒေါင်တွင်း",
         labelPipeline: "လမ်းခရီးရှိ",
@@ -553,9 +552,9 @@
         inboundSectionLabel: "အဝင်ပိုင်း",
         inboundHeading: "ကုန်ပစ္စည်း အဝင်မှတ်တမ်း (Inbound)",
         originLabel: "ပစ္စည်းစာရင်းသွင်းခြင်း",
-        inboundWaybillLabel: "ဝေဘီလ် နံပါတ် (WayBill)",
+        inboundWaybillLabel: "ဝေးဘီလ် နံပါတ် (WayBill)",
         inboundTargetLabel: "သတ်မှတ်ထားသည့် ပရောဂျက်နေရာ",
-        inboundTotalBoxesLabel: "စုစုပေါင်း ပေးပို့သည့်သေတ္တာအရေအတွက်",
+        inboundTotalBoxesLabel: "စုစုပေါင်း ပေးပို့သည့်ဂျက်ဖါအရေအတွက်",
         inboundManifestLabel: "ပစ္စည်းစာရင်း အကျဉ်းချုပ်",
         inboundRegisterBtn: "ဒေတာ သိမ်းဆည်းမည်",
         inboundReset: "ပြန်စမည်",
@@ -569,28 +568,28 @@
         ledgerSectionLabel: "ဒေတာမှတ်တမ်းချုပ်",
         ledgerHeading: "သမိုင်းဝင်မှတ်တမ်းများနှင့် စာရင်းစစ်ဆေးမှုများ",
         arrivalTitle: "ရောက်ရှိမှု အခြေအနေကို အပ်ဒိတ်လုပ်ရန်",
-        arrivalBoxesLabel: "ရောက်ရှိလာသော သေတ္တာအရေအတွက်",
+        arrivalBoxesLabel: "ရောက်ရှိလာသော ဂျက်ဖါအရေအတွက်",
         dispatchTitle: "ပစ္စည်း ထုတ်ယူဖြန့်ဖြူးခြင်း",
         dispatchDestinationLabel: "ပို့ဆောင်မည့် သတ်မှတ်နေရာ",
-        dispatchQuantityLabel: "ထုတ်ယူမည့် သေတ္တာအရေအတွက်",
+        dispatchQuantityLabel: "ထုတ်ယူမည့် ဂျက်ဖါအရေအတွက်",
         ledgerEditTitle: "မှတ်တမ်းကို ပြင်ဆင်ရန်",
         ledgerEditTargetLabel: "သတ်မှတ်ပရောဂျက်",
-        ledgerEditTotalLabel: "စုစုပေါင်း ပေးပို့ခဲ့သည့်သေတ္တာ",
-        thPipelineWaybill: "ဝေဘီလ်",
+        ledgerEditTotalLabel: "စုစုပေါင်း ပေးပို့ခဲ့သည့်ဂျက်ဖါ",
+        thPipelineWaybill: "ဝေးဘီလ်",
         thPipelineProject: "ပရောဂျက်",
         thPipelineTotal: "စုစုပေါင်း ပေးပို့မှု",
         thPipelineArrived: "ရောက်ရှိပြီး",
-        thPipelineBoxes: "လမ်းခရီးရှိသေတ္တာ",
+        thPipelineBoxes: "လမ်းခရီးရှိဂျက်ဖါ",
         thPipelineStatus: "အခြေအနေ",
         thPipelineAction: "လုပ်ဆောင်ချက်",
-        thWarehouseWaybill: "ဝေဘီလ်",
+        thWarehouseWaybill: "ဝေးဘီလ်",
         thWarehouseProject: "ပရောဂျက်",
         thWarehouseIn: "ဂိုဒေါင်တွင်းရှိ",
         thWarehouseManifest: "ပစ္စည်းအကျဉ်း",
         thWarehouseStatus: "အခြေအနေ",
         thWarehouseLastTransit: "နောက်ဆုံးပို့ဆောင်မှု",
         thWarehouseAction: "လုပ်ဆောင်ချက်",
-        thLedgerWaybill: "ဝေဘီလ်",
+        thLedgerWaybill: "ဝေးဘီလ်",
         thLedgerProject: "ပရောဂျက်",
         thLedgerManifest: "ပစ္စည်းစာရင်းအကျဉ်း",
         thLedgerTotal: "စုစုပေါင်း ပေးပို့မှု",
@@ -604,7 +603,7 @@
         pipelineEmpty: "လမ်းခရီးရှိ ကုန်ပစ္စည်းစာရင်း မရှိသေးပါ။",
         warehouseEmpty: "ဂိုဒေါင်တွင်း ထုတ်ယူရန် ပစ္စည်းစာရင်း မရှိသေးပါ။",
         ledgerEmpty: "မှတ်တမ်းချုပ် ဒေတာမရှိသေးပါ။",
-        inboundWaybillPlaceholder: "ဝေဘီလ်နံပါတ် ရိုက်ထည့်ပါ",
+        inboundWaybillPlaceholder: "ဝေးဘီလ်နံပါတ် ရိုက်ထည့်ပါ",
         inboundManifestPlaceholder: "ကုန်ပစ္စည်းအမျိုးအမည် သို့မဟုတ် မှတ်စုများ (မဖြစ်မနေ ဖြည့်ရန်မလိုပါ)"
       }
     };
