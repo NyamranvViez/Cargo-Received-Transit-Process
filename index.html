@@ -470,7 +470,7 @@
         inboundWaybillLabel: "WayBill Number",
         inboundTargetLabel: "Target Project Allocation",
         inboundTotalBoxesLabel: "Total Shipped Boxes",
-        inboundManifestLabel: "Manifest Summary",
+        inboundManifestLabel: "Description",
         inboundRegisterBtn: "Register Shipment",
         inboundReset: "Reset",
         pipelineLogicLabel: "Pipeline Logic",
@@ -500,13 +500,13 @@
         thWarehouseWaybill: "WayBill",
         thWarehouseProject: "Project",
         thWarehouseIn: "In Warehouse",
-        thWarehouseManifest: "Manifest Summary",
+        thWarehouseManifest: "Description",
         thWarehouseStatus: "Status",
         thWarehouseLastTransit: "Last Transit",
         thWarehouseAction: "Action",
         thLedgerWaybill: "WayBill",
         thLedgerProject: "Project",
-        thLedgerManifest: "Manifest Summary",
+        thLedgerManifest: "Description",
         thLedgerTotal: "Total Shipped",
         thLedgerArrived: "Arrived",
         thLedgerWarehouse: "Warehouse",
@@ -955,7 +955,7 @@
 
     function toggleLanguage() {
       currentLang = currentLang === 'en' ? 'mm' : 'en';
-      ui.langToggleBtn.innerText = currentLang === 'en' ? 'MM' : 'EN';
+      ui.langToggleBtn.innerText = currentLang === 'en' ? 'မြန်မာဘာသာ' : 'English';
       document.body.classList.toggle('mm-lang', currentLang === 'mm');
 
       const dict = translations[currentLang];
